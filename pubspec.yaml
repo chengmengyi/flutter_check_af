@@ -1,7 +1,7 @@
 name: flutter_check_af
 description: "flutter_check_af"
 version: 0.0.1
-homepage:
+homepage: https://github.com/chengmengyi/flutter_check_af.git
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
