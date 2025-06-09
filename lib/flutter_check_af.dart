@@ -12,10 +12,12 @@ class FlutterCheckAf {
 
   RequestAf? _requestAf;
   RequestCloak? _requestCloak;
+  String _afSwitch="1";
 
   init({
     required String afKey,
     required String afAppId,
+    required String afSwitch,
     required String distinctId,
     required String clockUrl,
     required String cloakWhiteKey,
@@ -23,6 +25,7 @@ class FlutterCheckAf {
     required RequestAfCallback requestAfCallback,
     required RequestCloakCallback requestCloakCallback,
   }){
+    _afSwitch=afSwitch;
     _requestAf=RequestAf(afKey: afKey, afAppId: afAppId, distinctId: distinctId, requestAfCallback: requestAfCallback);
     _requestCloak=RequestCloak(url: clockUrl, data: cloakData, whiteKey: cloakWhiteKey, requestCloakCallback: requestCloakCallback);
   }
@@ -36,7 +39,7 @@ class FlutterCheckAf {
       log("check user---> checkUser --->cloak is black");
       return false;
     }
-    if(_requestAf?.afIsB!=true){
+    if(_afSwitch=="1"&&_requestAf?.afIsB!=true){
       log("check user---> checkUser ---> af is a");
       return false;
     }
@@ -55,6 +58,10 @@ class FlutterCheckAf {
 
   uploadAdRevenue(String networkName,double revenue,String adId,String pointName){
     _requestAf?.uploadAdRevenue(networkName, revenue, adId, pointName);
+  }
+
+  updateAfSwitch(String afSwitch){
+    _afSwitch=afSwitch;
   }
 
   log(String s){
