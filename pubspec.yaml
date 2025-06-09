@@ -1,6 +1,6 @@
 name: flutter_check_af
 description: "flutter_check_af"
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/chengmengyi/flutter_check_af.git
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  dio: 5.7.0
+  dio: 5.8.0+1
   appsflyer_sdk_plus: 0.0.4
   get_storage: 2.1.1
 
