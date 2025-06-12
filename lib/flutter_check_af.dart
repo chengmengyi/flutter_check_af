@@ -28,6 +28,8 @@ class FlutterCheckAf {
     _afSwitch=afSwitch;
     _requestAf=RequestAf(afKey: afKey, afAppId: afAppId, distinctId: distinctId, requestAfCallback: requestAfCallback);
     _requestCloak=RequestCloak(url: clockUrl, data: cloakData, whiteKey: cloakWhiteKey, requestCloakCallback: requestCloakCallback);
+    _requestAf?.init();
+    _requestCloak?.init();
   }
 
   bool checkUser(){
