@@ -38,9 +38,9 @@ class RequestAf{
         if(res["status"]=="success"){
           var status = res["payload"]["af_status"].toString();
           var isB = !status.contains("Organic");
-          requestAfCallback.requestSuccess.call(isB);
+          afIsB=true;
+          requestAfCallback.requestSuccess.call(afIsB);
           if(isB){
-            afIsB=true;
             if(AfStorageHep.instance.getAfResult().isEmpty){
               requestAfCallback.firstRequestAfB.call();
               AfStorageHep.instance.saveAfResult(status);
