@@ -66,6 +66,13 @@ class FlutterCheckAf {
     _afSwitch=afSwitch;
   }
 
+  logEvent({
+    required String eventName,
+    Map? eventValues,
+  }){
+    _requestAf?.logEvent(eventName: eventName,eventValues: eventValues);
+  }
+
   log(String s){
     if(kDebugMode){
       print(s);

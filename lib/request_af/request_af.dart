@@ -101,6 +101,5 @@ class RequestAf{
     FlutterCheckAf.instance.log("check user---> logEvent--->params--->networkName:$eventName-->eventValues:$eventValues");
     var result = await _appsflyerSdk?.logEvent(eventName, eventValues);
     FlutterCheckAf.instance.log("check user---> logEvent--->result:$result---->networkName:$eventName-->eventValues:$eventValues");
-
   }
 }
