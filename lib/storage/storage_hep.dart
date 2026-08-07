@@ -8,6 +8,13 @@ class AfStorageHep{
 
   final String _afResultKey="check_af_result_key";
   final String _localCheckUserKey="local_check_user_key";
+  final String _localReferrerUserKey="local_referrer_user_key";
+
+  String getLocalReferrerStr()=>_getStorage.read(_localReferrerUserKey)??"";
+
+  saveLocalReferrerStr(String result){
+    _getStorage.write(_localReferrerUserKey, result);
+  }
 
   saveAfResult(String result){
     _getStorage.write(_afResultKey, result);

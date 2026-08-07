@@ -1,13 +1,13 @@
 import 'package:appsflyer_sdk_plus/appsflyer_sdk.dart';
 import 'package:flutter_check_af/flutter_check_af.dart';
-import 'package:flutter_check_af/request_af/request_af_callback.dart';
+import 'package:flutter_check_af/callback/request_callback.dart';
 import 'package:flutter_check_af/storage/storage_hep.dart';
 
 class RequestAf{
   String afKey;
   String afAppId;
   String distinctId;
-  RequestAfCallback requestAfCallback;
+  RequestCallback requestCallback;
 
   AppsflyerSdk? _appsflyerSdk;
   Function()? aPackageAfCall;
@@ -18,7 +18,7 @@ class RequestAf{
     required this.afKey,
     required this.afAppId,
     required this.distinctId,
-    required this.requestAfCallback,
+    required this.requestCallback,
   });
 
   init()async{
@@ -39,21 +39,21 @@ class RequestAf{
           var status = res["payload"]["af_status"].toString();
           var isB = !status.contains("Organic");
           afIsB=true;
-          requestAfCallback.requestSuccess.call(afIsB);
+          requestCallback.requestAfCallback.requestSuccess.call(afIsB);
           if(isB){
             if(AfStorageHep.instance.getAfResult().isEmpty){
-              requestAfCallback.firstRequestAfB.call();
+              requestCallback.requestAfCallback.firstRequestAfB.call();
               AfStorageHep.instance.saveAfResult(status);
             }
             aPackageAfCall?.call();
           }
         }
       }catch(e){
-
+        FlutterCheckAf.instance.log("check user---> parse request af result failed--->$e");
       }
     });
 
-    requestAfCallback.startRequestAf.call();
+    requestCallback.requestAfCallback.startRequestAf.call();
     _startAf();
   }
 
@@ -62,11 +62,11 @@ class RequestAf{
     _appsflyerSdk?.startSDK(
         onSuccess: (){
           FlutterCheckAf.instance.log("check user---> initAppsflyer success");
-          requestAfCallback.startAfSuccess.call();
+          requestCallback.requestAfCallback.startAfSuccess.call();
         },
         onError: (code,msg){
           FlutterCheckAf.instance.log("check user---> initAppsflyer fail--->$code---->$msg");
-          requestAfCallback.startAfFail.call(code,msg);
+          requestCallback.requestAfCallback.startAfFail.call(code,msg);
           Future.delayed(const Duration(milliseconds: 1000),(){
             _startAf();
           });

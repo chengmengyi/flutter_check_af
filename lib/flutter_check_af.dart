@@ -1,9 +1,9 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_check_af/request_af/request_af.dart';
-import 'package:flutter_check_af/request_af/request_af_callback.dart';
 import 'package:flutter_check_af/request_cloak/request_cloak.dart';
-import 'package:flutter_check_af/request_cloak/request_cloak_callback.dart';
+import 'package:flutter_check_af/callback/request_callback.dart';
+import 'package:flutter_check_af/request_referrer/request_referrer.dart';
 import 'package:flutter_check_af/storage/storage_hep.dart';
 
 class FlutterCheckAf {
@@ -12,24 +12,23 @@ class FlutterCheckAf {
 
   RequestAf? _requestAf;
   RequestCloak? _requestCloak;
-  String _afSwitch="1";
+  final List<String> _referrerConfList=[];
+  bool _referrerAlwaysB=false;
 
   init({
     required String afKey,
     required String afAppId,
-    required String afSwitch,
     required String distinctId,
     required String clockUrl,
     required String cloakWhiteKey,
     required Map<String,dynamic> cloakData,
-    required RequestAfCallback requestAfCallback,
-    required RequestCloakCallback requestCloakCallback,
+    required RequestCallback requestCallback,
   }){
-    _afSwitch=afSwitch;
-    _requestAf=RequestAf(afKey: afKey, afAppId: afAppId, distinctId: distinctId, requestAfCallback: requestAfCallback);
-    _requestCloak=RequestCloak(url: clockUrl, data: cloakData, whiteKey: cloakWhiteKey, requestCloakCallback: requestCloakCallback);
+    _requestAf=RequestAf(afKey: afKey, afAppId: afAppId, distinctId: distinctId, requestCallback: requestCallback);
+    _requestCloak=RequestCloak(url: clockUrl, data: cloakData, whiteKey: cloakWhiteKey, requestCallback: requestCallback);
     _requestAf?.init();
     _requestCloak?.init();
+    RequestReferrer(requestCallback: requestCallback).init();
   }
 
   bool checkUser(){
@@ -41,13 +40,25 @@ class FlutterCheckAf {
       log("check user---> checkUser --->cloak is black");
       return false;
     }
-    if(_afSwitch=="1"&&_requestAf?.afIsB!=true){
+    if(_requestAf?.afIsB!=true&&!_checkReferrerBuyUser()){
       log("check user---> checkUser ---> af is a");
       return false;
     }
     log("check user---> checkUser ---> is b");
     AfStorageHep.instance.saveUser(true);
     return true;
+  }
+
+  bool _checkReferrerBuyUser(){
+    final referrer=AfStorageHep.instance.getLocalReferrerStr();
+    if(_referrerAlwaysB) return true;
+    if(_referrerConfList.isEmpty) return referrer.contains('adjust');
+    return _referrerConfList.any(referrer.contains);
+  }
+
+  updateReferrerList(bool referrerAlwaysB,List<String> list){
+    _referrerConfList..clear()..addAll(list);
+    _referrerAlwaysB=referrerAlwaysB;
   }
 
   setAfCloakCallbackInAPackage({
@@ -60,10 +71,6 @@ class FlutterCheckAf {
 
   uploadAdRevenue(String networkName,double revenue,String adId,String pointName){
     _requestAf?.uploadAdRevenue(networkName, revenue, adId, pointName);
-  }
-
-  updateAfSwitch(String afSwitch){
-    _afSwitch=afSwitch;
   }
 
   logEvent({
