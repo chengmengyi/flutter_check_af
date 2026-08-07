@@ -39,7 +39,7 @@ class RequestAf{
           var status = res["payload"]["af_status"].toString();
           var isB = !status.contains("Organic");
           afIsB=true;
-          requestCallback.requestAfCallback.requestSuccess.call(afIsB);
+          requestCallback.requestAfCallback.requestSuccess.call(afIsB,status);
           if(isB){
             if(AfStorageHep.instance.getAfResult().isEmpty){
               requestCallback.requestAfCallback.firstRequestAfB.call();

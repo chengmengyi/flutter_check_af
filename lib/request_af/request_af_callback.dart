@@ -1,6 +1,6 @@
 class RequestAfCallback{
   final void Function() startRequestAf;
-  final void Function(bool isB) requestSuccess;
+  final void Function(bool isB,String afStr) requestSuccess;
   final void Function() firstRequestAfB;
   final void Function() startAfSuccess;
   final void Function(int code,String msg) startAfFail;
