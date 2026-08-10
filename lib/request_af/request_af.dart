@@ -78,12 +78,12 @@ class RequestAf{
     aPackageAfCall=call;
   }
 
-  uploadAdRevenue(String networkName,double revenue,String adId,String pointName){
+  uploadAdRevenue(String networkName,double revenue,String adId,String pointName,AFMediationNetwork mediationNetwork){
     FlutterCheckAf.instance.log("check user---> logAdRevenue--->networkName:$networkName--revenue:$revenue--adId:$adId--pointName:$pointName");
     _appsflyerSdk?.logAdRevenue(
         AdRevenueData(
             monetizationNetwork: networkName,
-            mediationNetwork: AFMediationNetwork.applovinMax.value,
+            mediationNetwork: mediationNetwork.value,
             currencyIso4217Code: "USD",
             revenue: revenue,
             additionalParameters: {

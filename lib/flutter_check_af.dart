@@ -1,4 +1,5 @@
 
+import 'package:appsflyer_sdk_plus/appsflyer_sdk.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_check_af/request_af/request_af.dart';
 import 'package:flutter_check_af/request_cloak/request_cloak.dart';
@@ -69,8 +70,8 @@ class FlutterCheckAf {
     _requestCloak?.setAPackageCloakCall(cloakCall);
   }
 
-  uploadAdRevenue(String networkName,double revenue,String adId,String pointName){
-    _requestAf?.uploadAdRevenue(networkName, revenue, adId, pointName);
+  uploadAdRevenue(String networkName,double revenue,String adId,String pointName,AFMediationNetwork mediationNetwork){
+    _requestAf?.uploadAdRevenue(networkName, revenue, adId, pointName,mediationNetwork);
   }
 
   logEvent({
